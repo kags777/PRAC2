@@ -14,6 +14,7 @@ namespace PRAC2
         public int MoreSlices;// сколько кусков будет доп нарезано
         public int quantity;//количество кусков, которое будет съедено
         public int PizzaCount;//количество пицц, которые надо испечь
+        public int Reminder;//нужны ли ананасы
 
         public void Eat()
         {
@@ -107,13 +108,11 @@ namespace PRAC2
         /*НАПОМИНАНИЕ ПРО АНАНАСЫ*/
         public void PineappleReminder()
         {
-
-
             do
             {
                 Console.WriteLine("Не желаете ли добавить анансы в пиццу?  1 - Добавить ананасы.  2 - Не добавлять ананасы.");
                 string A = Console.ReadLine();
-                if (int.TryParse(A, out a))
+                if (int.TryParse(A, out Reminder))
                 {
                     a = 1;
                 }
@@ -125,14 +124,14 @@ namespace PRAC2
 
             do
             {
-                if (MoreSlices == 0)
+                if (Reminder == 0)
                 {
                     a = 0;
                     Console.WriteLine("Ошибка! Вы не испекли ни одной пиццы.");
                 }
             } while (a == 0);
             Console.WriteLine($"Испечено: {PizzaCount} шт");
-            if 1
+            if 
         }
 
 
