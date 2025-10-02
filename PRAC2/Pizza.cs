@@ -4,22 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace PRAC2
 {
     class Pizza : Food
     {
-        private int Slices;
-
-        public int a = 0;//вспомогательная переменная
+        public static int a = 0;//вспомогательная переменная
+        public int b = 0;//вспомогательная переменная
+        public static int v = 1;//вспомогательная переменная
         public int MoreSlices;// сколько кусков будет доп нарезано
         public int quantity;//количество кусков, которое будет съедено
         public int PizzaCount;//количество пицц, которые надо испечь
-        public int Reminder;//нужны ли ананасы
+        public static int Reminder;//нужны ли ананасы
+        public int Slices { get; set; }
+        public Pizza(string name, int mass, int slices) : base(name,mass)
+        {
+            Slices = slices;
+        }
 
         public void Eat()
         {
-
-
             do
             {
                 Console.WriteLine("Введите количество кусков которое вы хотите съесть:");
@@ -79,22 +83,22 @@ namespace PRAC2
 
             do
             {
-            do
-            {
-                Console.WriteLine("Введите количество пицц, которое вы хотите испечь:");
-                string pizzaCount = Console.ReadLine();
-
-                if (int.TryParse(pizzaCount, out PizzaCount))
+                do
                 {
-                    a = 1;
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: это не число!");
-                }
-            } while (a != 1);
+                    Console.WriteLine("Введите количество пицц, которое вы хотите испечь:");
+                    string pizzaCount = Console.ReadLine();
 
-            
+                    if (int.TryParse(pizzaCount, out PizzaCount))
+                    {
+                        a = 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: это не число!");
+                    }
+                } while (a != 1);
+
+
                 if (MoreSlices == 0)
                 {
                     a = 0;
@@ -106,47 +110,41 @@ namespace PRAC2
         }
 
         /*НАПОМИНАНИЕ ПРО АНАНАСЫ*/
-        public void PineappleReminder()
+        public static void PineappleReminder()
         {
             do
             {
-                Console.WriteLine("Не желаете ли добавить анансы в пиццу?  1 - Добавить ананасы.  2 - Не добавлять ананасы.");
-                string A = Console.ReadLine();
-                if (int.TryParse(A, out Reminder))
+                do
                 {
-                    a = 1;
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: это не число!");
-                }
-            } while (a != 1);
+                    Console.WriteLine("Не желаете ли добавить анансы в пиццу?  1 - Добавить ананасы.  2 - Не добавлять ананасы.");
+                    string A = Console.ReadLine();
+                    if (int.TryParse(A, out Reminder))
+                    {
+                        a = 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: это не число!");
+                    }
+                } while (a != 1);
 
-            do
-            {
-                if (Reminder == 0)
+                switch (Reminder)
                 {
-                    a = 0;
-                    Console.WriteLine("Ошибка! Вы не испекли ни одной пиццы.");
+
+                    case 1:
+                        Console.WriteLine("В пиццу добавлены ананасы!");
+                        v = 1;
+                        break;
+                    case 2:
+                        Console.WriteLine("В пиццу не добавлены ананасы!");
+                        v = 1;
+                        break;
+                    default:
+                        Console.WriteLine("Вы ввели некорректный вариант ответа!");
+                        v = 0;
+                        break;
                 }
-            } while (a == 0);
-            Console.WriteLine($"Испечено: {PizzaCount} шт");
-            if 
+            } while (v != 1);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

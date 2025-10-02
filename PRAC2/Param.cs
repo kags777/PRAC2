@@ -12,16 +12,16 @@ namespace PRAC2
         enum PizzaSize
         {
             Small,
-            Medium,
-            Large,
-            ExtraLarge
+            medium,
+            large,
+            extraLarge
         }
 
         struct Weight
         {
-            private string Mass;
+            public int Mass;
 
-            public string GetMass()
+            public int GetMass()
             {
                 return Mass;
             }

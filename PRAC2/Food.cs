@@ -8,21 +8,19 @@ namespace PRAC2
 {
     class Food
     {
-        private string Mass { get};
-        private string Name { get};
-
-
-        public Food(string mass, string name)
+        public string Name { get; set; }
+        public int Mass { get; set; }
+        
+        public Food(string name, int mass)
         {
-            Mass = mass;
             Name = name;
+            Mass = mass;
         }
 
-        public void Deconstruct(string mass, string name)
+        public void Deconstruct(out string name, out int mass)
         {
-            mass = Mass;
             name = Name;
+            mass = Mass;
         }
-
-
     }
+}
