@@ -24,30 +24,7 @@ namespace PRAC2
 
         }
 
-        //public int Eat()
-        //{
-        //    do
-        //    {
-        //        Console.WriteLine("Введите количество кусков которое вы хотите съесть:");
-        //        string quantityStr = Console.ReadLine();
-
-        //        if (int.TryParse(quantityStr, out quantity))
-        //        {
-        //            a = 1;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Ошибка: это не число!");
-        //        }
-        //    } while (a != 1);
-
-        //    for (int i = 0; i < quantity; i++)
-        //    {
-        //        Slices--;
-        //    }
-        //    Console.WriteLine($"Съедено: {quantity}. Осталось:{Slices}");
-        //    return Slices;
-        //}
+        
 
         public int Eat()
         {
