@@ -9,9 +9,9 @@ namespace PRAC2
 {
     internal class Param
     {
-        enum PizzaSize
+        public enum PizzaSize
         {
-            Small,
+            small,
             medium,
             large,
             extraLarge

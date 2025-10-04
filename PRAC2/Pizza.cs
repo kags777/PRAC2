@@ -17,50 +17,101 @@ namespace PRAC2
         public int PizzaCount;//количество пицц, которые надо испечь
         public static int Reminder;//нужны ли ананасы
         public int Slices { get; set; }
-        public Pizza(string name, int mass, int slices) : base(name,mass)
+        public int WeightToSize { get; set; }
+        public Pizza(string name, int mass, int slices) : base(name, mass)
         {
             Slices = slices;
+
         }
 
-        public void Eat()
+        //public int Eat()
+        //{
+        //    do
+        //    {
+        //        Console.WriteLine("Введите количество кусков которое вы хотите съесть:");
+        //        string quantityStr = Console.ReadLine();
+
+        //        if (int.TryParse(quantityStr, out quantity))
+        //        {
+        //            a = 1;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Ошибка: это не число!");
+        //        }
+        //    } while (a != 1);
+
+        //    for (int i = 0; i < quantity; i++)
+        //    {
+        //        Slices--;
+        //    }
+        //    Console.WriteLine($"Съедено: {quantity}. Осталось:{Slices}");
+        //    return Slices;
+        //}
+
+        public int Eat()
         {
+            int quantity = 0;
+            bool validInput = false;
+
+            // Проверка корректного ввода
             do
             {
-                Console.WriteLine("Введите количество кусков которое вы хотите съесть:");
+                Console.WriteLine($"Введите количество кусков, которое вы хотите съесть (доступно: {Slices}):");
                 string quantityStr = Console.ReadLine();
 
                 if (int.TryParse(quantityStr, out quantity))
                 {
-                    a = 1;
+                    if (quantity <= 0)
+                    {
+                        Console.WriteLine("Ошибка: количество должно быть положительным!");
+                    }
+                    else if (quantity > Slices)
+                    {
+                        Console.WriteLine($"Ошибка: нельзя съесть больше, чем есть! Всего доступно {Slices} кусков.");
+                    }
+                    else
+                    {
+                        validInput = true;
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Ошибка: это не число!");
                 }
-            } while (a != 1);
 
-            for (int i = 0; i < quantity; i++)
+            } while (!validInput);
+
+            // Уменьшаем количество кусков
+            Slices -= quantity;
+            Console.WriteLine($"Съедено: {quantity}. Осталось: {Slices}");
+
+            // Если пицца съедена полностью
+            if (Slices == 0)
             {
-                Slices--;
+                Console.WriteLine("Вы съели всю пиццу!");
             }
-            Console.WriteLine($"Съедено: {quantity}. Осталось:{Slices}");
+
+            return Slices;
         }
+
 
         public void Cut()
         {
-            Console.WriteLine("Введите количество кусков на которое вы хотите дополнительно порезать пиццу:");
-            string MoreSlicesStr = Console.ReadLine();
+
 
             do
             {
+                Console.WriteLine("\nВведите количество кусков на которое вы хотите дополнительно порезать пиццу:");
+                string MoreSlicesStr = Console.ReadLine();
 
-                if (int.TryParse(MoreSlicesStr, out MoreSlices))
+                if (int.TryParse(MoreSlicesStr, out MoreSlices) && (MoreSlices <= 10))
                 {
                     a = 1;
                 }
                 else
                 {
-                    Console.WriteLine("Ошибка: это не число!");
+                    Console.WriteLine("Ошибка! Введите число!");
                 }
             } while (a != 1);
 
@@ -74,49 +125,25 @@ namespace PRAC2
             } while (a == 0);
 
             Slices += MoreSlices;
-            Console.WriteLine($"Стало{Slices} куск(а)ов");
+            Console.WriteLine($"Стало {Slices} куск(а)ов");
 
         }
 
-        public void Bake()
+        public static void Bake(string pizza)
         {
-
-            do
-            {
-                do
-                {
-                    Console.WriteLine("Введите количество пицц, которое вы хотите испечь:");
-                    string pizzaCount = Console.ReadLine();
-
-                    if (int.TryParse(pizzaCount, out PizzaCount))
-                    {
-                        a = 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: это не число!");
-                    }
-                } while (a != 1);
-
-
-                if (MoreSlices == 0)
-                {
-                    a = 0;
-                    Console.WriteLine("Ошибка! Вы не испекли ни одной пиццы.");
-                }
-            } while (a == 0);
-
-            Console.WriteLine($"Испечено: {PizzaCount} шт");
+            Console.WriteLine("Пицца готовится...");
+            Thread.Sleep(3000); // пауза
+            Console.WriteLine($"Пицца {pizza}  готова!");
         }
 
         /*НАПОМИНАНИЕ ПРО АНАНАСЫ*/
-        public static void PineappleReminder()
+        public static int PineappleReminder()
         {
             do
             {
                 do
                 {
-                    Console.WriteLine("Не желаете ли добавить анансы в пиццу?  1 - Добавить ананасы.  2 - Не добавлять ананасы.");
+                    Console.WriteLine("Не желаете ли добавить ананасы в пиццу?  1 - Добавить ананасы.  2 - Не добавлять ананасы.");
                     string A = Console.ReadLine();
                     if (int.TryParse(A, out Reminder))
                     {
@@ -134,14 +161,17 @@ namespace PRAC2
                     case 1:
                         Console.WriteLine("В пиццу добавлены ананасы!");
                         v = 1;
+                        return 1;
                         break;
                     case 2:
                         Console.WriteLine("В пиццу не добавлены ананасы!");
                         v = 1;
+                        return 0;
                         break;
                     default:
                         Console.WriteLine("Вы ввели некорректный вариант ответа!");
                         v = 0;
+                        return 0;
                         break;
                 }
             } while (v != 1);
