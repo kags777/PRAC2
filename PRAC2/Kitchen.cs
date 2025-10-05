@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PRAC2.Param;
 
 namespace PRAC2
 {
@@ -15,34 +16,36 @@ namespace PRAC2
         int Num;//вспомогательная переменная для хранения номера пиццы в заказе
         int Num1;//вспомогательная переменная для хранения выбора действия 
         Param.PizzaSize size;//переменная перечисляемого типа
-        Pizza A;//объявление экземпляра класса
-        int quantity;//для определение ошибки при вводе размера нужного
         int Choice; //для выбора резать ли пиццу на куски или нет
         int QuantityDelete; //номер пиццы, которую удалять собираются
         int NumEat;//номер пиццы, которую хотим съесть
-        int invalidOrders; //переменная для обнаружения того, что ни одной пиццы не заказано
+        int checkInt;//переменная для проверки введенного числа
+        int InvalidChoice;// переменная для проверки введеного числа
+        int quantity;//для определение ошибки при вводе размера нужного
+        public int NumCalz;//для хранения выбора номера кальцоне
+        public int invalidCalzone;// для хранения состояния ввода
+        public int index1; //Для пронумерации позиций в заказе
 
 
-        public List<Calzone> pizza = new List<Calzone>
+        public List<Pizza> pizza = new List<Pizza>
         {
-            new Calzone("Маргарита", 400, 8, 285, "-"),
-            new Calzone("Пепперони", 450, 8, 300, "-"),
-            new Calzone("Гавайская", 450, 8, 290, "-"),
-            new Calzone("Четыре сыра", 500, 8, 350, "-"),
-            new Calzone("Вегетарианская", 400, 8, 270, "-"),
-            new Calzone("Мясная", 500, 8, 400, "-"),
-            new Calzone("Барбекю с курицей", 500, 8, 350, "-"),
-            new Calzone("С морепродуктами", 450, 8, 320, "-"),
-            new Calzone("С ананасами", 450, 8, 280, "-"),
-            new Calzone("С беконом", 500, 8, 360, "-"),
-            new Calzone("С грибами", 450, 8, 310, "-"),
-            new Calzone("С ветчиной", 500, 8, 330, "-"),
+            new Pizza("Пицца Маргарита", 400, 8, 285, "-"),
+            new Pizza("Пицца Пепперони", 450, 8, 300, "-"),
+            new Pizza("Гавайская Пицца", 450, 8, 290, "-"),
+            new Pizza("Пицца Четыре сыра", 500, 8, 350, "-"),
+            new Pizza("Вегетарианская Пицца", 400, 8, 270, "-"),
+            new Pizza("Мясная Пицца", 500, 8, 400, "-"),
+            new Pizza("Пицца Барбекю с курицей", 500, 8, 350, "-"),
+            new Pizza("Пицца с морепродуктами", 450, 8, 320, "-"),
+            new Pizza("Пицца с треской", 450, 8, 280, "-"),
+            new Pizza("Пицца с беконом", 500, 8, 360, "-"),
+            new Pizza("Пицца с грибами", 450, 8, 310, "-"),
+            new Pizza("Пицца с ветчиной", 500, 8, 330, "-"),
         };
 
-        public List<Calzone> orders = new List<Calzone>//список для хранения заказов
+        public List<Food> orders = new List<Food>//список для хранения заказов
         { };
-
-        public List<Calzone> cooked = new List<Calzone>//список для хранения заказов
+        public List<Food> cooked = new List<Food>//список для хранения заказов
         { };
         public void ShowMenu()
         {
@@ -50,22 +53,15 @@ namespace PRAC2
             {
                 do
                 {
-                    Console.WriteLine("\n1 - Добавить пиццу в заказ\n2 - Отправить заказ на кухню приготавливаться\n3 - Удалить пиццу из заказа\n4 - Покушать\n5 - Выйти");
+                    Console.WriteLine("\n1 - Добавить пиццу в заказ\n2 - Добавить кальцоне\n3 - Посмотреть заказ\n4 - Отправить заказ на кухню приготавливаться\n5 - Удалить позицию из заказа\n6 - Покушать\n7 - Выйти");
                     string num = Console.ReadLine();
+                    if (Param.TryParseNumber(num, out Num1) == true && (Num1 <= 7)) checkInt = 1;
+                } while (checkInt != 1);
 
-                    if (int.TryParse(num, out Num1) && Num1 <= 5)
-                    {
-                        a = 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: Выберите существующую функцию!");
-                    }
-                } while (a != 1);
                 Num = Num1;
+
                 switch (Num)
                 {
-
                     case 1:
                         do
                         {
@@ -83,26 +79,19 @@ namespace PRAC2
 
                                 string num = Console.ReadLine();
 
-                                if (int.TryParse(num, out Num))
-                                {
-                                    a = 1;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Ошибка: это не число!");
-                                }
-                            } while (a != 1);
+                                if (Param.TryParseNumber(num, out Num) == true) checkInt = 2;
+                            } while (checkInt != 2);
 
                             if (Num < 1 || Num > pizza.Count)
                             {
                                 Console.WriteLine("Ошибка: выберите пиццу из списка!");
-                                a = 3;
+                                InvalidChoice = 3;
                             }
                             else
                             {
-                                a = 0;
+                                InvalidChoice = 0;
                             }
-                        } while (a == 3);
+                        } while (InvalidChoice == 3);
 
                         while (true)
                         {
@@ -175,17 +164,95 @@ namespace PRAC2
                         }
 
                         orders.Add(pizza[Num - 1]);
-
                         Console.WriteLine("\nПицца добавлена в заказ!");
-                        Console.WriteLine("\nВаш текущий заказ:");
-                        int index1 = 1;
-                        foreach (var pizza in orders)
+                        break;
+
+
+
+                    case 2:
+
+                        do
                         {
-                            Console.WriteLine($"{index1}) {pizza}");
+                            Console.WriteLine("Введите номер кальцоне, которую хотите добавить в заказ:\n" +
+                                "РАЗВЕСОВКА,КАЛОРИИ ПРИВЕДЕНЫ ДЛЯ МАЛЕНЬКОГО РАЗМЕРА КАЛЬЦОНЕ");
+
+                            int index = 1;
+                            foreach (var calz in Calzone.calzone)
+                            {
+                                Console.WriteLine($"{index,2}) {calz.Name,-25} {calz.Mass,6} г  {calz.Calories,5} ккал");
+                                index++;
+                            }
+
+                            string numCalz = Console.ReadLine();
+                            if (Param.TryParseNumber(numCalz, out NumCalz) == true)
+                                invalidCalzone = 1;
+
+                        } while (invalidCalzone != 1);
+
+                        do
+                        {
+                            if (NumCalz < 1 || NumCalz > Calzone.calzone.Count)
+                            {
+                                Console.WriteLine("Ошибка: выберите кальцоне из списка!");
+                                invalidCalzone = 3;
+                            }
+                            else
+                            {
+                                invalidCalzone = 0;
+                            }
+                        } while (invalidCalzone == 3);
+
+                        while (true)
+                        {
+                            Console.WriteLine("Введите размер кальцоне (small,medium,large,extraLarge):");
+                            string input = Console.ReadLine();
+
+                            if (Enum.TryParse(input, true, out size) && int.TryParse(input, out quantity) == false) // true = игнорировать регистр
+                            {
+                                Console.WriteLine($"Вы выбрали размер: {size}");
+
+                                if (size == Param.PizzaSize.medium)
+                                {
+                                    Calzone.calzone[NumCalz - 1].Calories += 100;
+                                    Calzone.calzone[NumCalz - 1].Mass += 100;
+                                }
+
+                                if (size == Param.PizzaSize.large)
+                                {
+                                    Calzone.calzone[NumCalz - 1].Calories += 200;
+                                    Calzone.calzone[NumCalz - 1].Mass += 200;
+                                }
+
+                                if (size == Param.PizzaSize.extraLarge)
+                                {
+                                    Calzone.calzone[NumCalz - 1].Calories += 300;
+                                    Calzone.calzone[NumCalz - 1].Mass += 300;
+                                }
+
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ошибка: такого размера нет! Попробуйте снова.");
+                            }
+                        }
+                        orders.Add(Calzone.calzone[NumCalz - 1]);
+
+                        Console.WriteLine("\nКальцоне добавлена в заказ!");
+                        break;
+
+                    case 3:
+
+                        if (orders.Count == 0 && orders.Count == 0)
+                            Console.WriteLine("Вы еще не сделали заказ");
+                        index1 = 1;
+                        foreach (var food in orders)
+                        {
+                            Console.WriteLine($"{index1}) {food}");
                             index1++;
                         }
                         break;
-                    case 2:
+                    case 4:
                         if (orders.Count > 0)
                         {
                             foreach (var i in orders)
@@ -198,15 +265,15 @@ namespace PRAC2
 
                             orders.Clear();
                         }
-                        else Console.WriteLine("Ни одной пиццы еще не заказано!");
+                        else Console.WriteLine("Ни одной позиции не заказано!");
 
                         break;
 
 
-                    case 3:
+                    case 5:
                         if (orders.Count == 0)
                         {
-                            Console.WriteLine("Ни одной пиццы еще не заказано!");
+                            Console.WriteLine("Ни одной позииции не заказано!");
                             break;
                         }
                         Console.WriteLine("\nВаш текущий заказ:");
@@ -219,7 +286,7 @@ namespace PRAC2
 
                         do
                         {
-                            Console.WriteLine("\nВведите номер пиццы, которую хотите удалить:");
+                            Console.WriteLine("\nВведите номер позиции, которую хотите удалить:");
                             string quantityDelete = Console.ReadLine();
 
                             if (int.TryParse(quantityDelete, out QuantityDelete))
@@ -236,18 +303,18 @@ namespace PRAC2
                                 Console.WriteLine("Ошибка! Это не число!");
                             }
                         } while (a != 1);
-                        Console.WriteLine($"\nУдалена пицца {orders[QuantityDelete - 1].Name} ");
+                        Console.WriteLine($"\nУдалена позиция {orders[QuantityDelete - 1].Name} ");
                         orders.RemoveAt(QuantityDelete - 1);
                         break;
 
-                    case 4:
-                        
-                            if (cooked.Count == 0)
-                            {
-                                Console.WriteLine("Ни одной пиццы еще не приготовлено!");
-                                break;
-                            }
-                      
+                    case 6:
+
+                        if (cooked.Count == 0)
+                        {
+                            Console.WriteLine("Ни одной позиции не приготовлено!");
+                            break;
+                        }
+
                         int index3 = 1;
                         foreach (var pizza in cooked)
                         {
@@ -257,7 +324,7 @@ namespace PRAC2
                         bool validInput = false;
                         do
                         {
-                            Console.WriteLine("Введите номер пиццы, которую хотите съесть:");
+                            Console.WriteLine("Введите номер позиции, которую хотите съесть:");
                             string numEat = Console.ReadLine();
 
                             if (int.TryParse(numEat, out NumEat) && NumEat > 0 && NumEat <= cooked.Count)
@@ -266,27 +333,22 @@ namespace PRAC2
                             }
                             else
                             {
-                                Console.WriteLine("Ошибка! Введите корректный номер пиццы.");
+                                Console.WriteLine("Ошибка! Введите корректный номер позиции.");
                             }
 
                         } while (!validInput);
-
-
-                         cooked[NumEat - 1].Slices = cooked[NumEat - 1].Eat();
-
+                        Pizza.Eat(NumEat);
+                        cooked.RemoveAt(NumEat - 1);
                         break;
-
-
-                    case 5:
+       
+                    case 7:
 
                         Console.WriteLine("До свидания!");
                         Environment.Exit(0);
                         break;
                 }
-            } while (Num1 != 5);
-
+            } while (Num1 != 7);
         }
-
     }
 }
 

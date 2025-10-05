@@ -1,5 +1,8 @@
-﻿using System;
+﻿using PRAC2;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -9,6 +12,8 @@ namespace PRAC2
 {
     internal class Param
     {
+       
+
         public enum PizzaSize
         {
             small,
@@ -25,7 +30,20 @@ namespace PRAC2
             {
                 return Mass;
             }
-
         }
+
+        public static bool TryParseNumber(string input, out int result)
+        {
+            if (int.TryParse(input, out result))
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: это не число!");
+                return false;
+            }
+        }
+
     }
 }

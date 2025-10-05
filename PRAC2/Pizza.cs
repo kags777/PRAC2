@@ -16,67 +16,37 @@ namespace PRAC2
         public int quantity;//количество кусков, которое будет съедено
         public int PizzaCount;//количество пицц, которые надо испечь
         public static int Reminder;//нужны ли ананасы
+
         public int Slices { get; set; }
         public int WeightToSize { get; set; }
-        public Pizza(string name, int mass, int slices) : base(name, mass)
+
+        public Pizza()
+        {
+            Name = "";
+            Mass = 0;
+            Slices = 0;
+            Calories = 0;
+            Pineapple = "";
+        }
+        public Pizza(string name, int mass, int slices, int calories, string pineapple) : base(name, mass)
         {
             Slices = slices;
-
+            Calories = calories;
+            Pineapple = pineapple;
         }
 
-        
-
-        public int Eat()
+        public override string ToString()//Перегруж метод ToString
         {
-            int quantity = 0;
-            bool validInput = false;
-
-            // Проверка корректного ввода
-            do
-            {
-                Console.WriteLine($"Введите количество кусков, которое вы хотите съесть (доступно: {Slices}):");
-                string quantityStr = Console.ReadLine();
-
-                if (int.TryParse(quantityStr, out quantity))
-                {
-                    if (quantity <= 0)
-                    {
-                        Console.WriteLine("Ошибка: количество должно быть положительным!");
-                    }
-                    else if (quantity > Slices)
-                    {
-                        Console.WriteLine($"Ошибка: нельзя съесть больше, чем есть! Всего доступно {Slices} кусков.");
-                    }
-                    else
-                    {
-                        validInput = true;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: это не число!");
-                }
-
-            } while (!validInput);
-
-            // Уменьшаем количество кусков
-            Slices -= quantity;
-            Console.WriteLine($"Съедено: {quantity}. Осталось: {Slices}");
-
-            // Если пицца съедена полностью
-            if (Slices == 0)
-            {
-                Console.WriteLine("Вы съели всю пиццу!");
-            }
-
-            return Slices;
+            return $"{Name} — {Mass}г, {Slices} кусков, {Calories} ккал, ананасы: {Pineapple}";
         }
 
+        public static void Eat(int a)
+        {
+            Console.WriteLine($"Вы съели позицию {a}");
+        }
 
         public void Cut()
         {
-
-
             do
             {
                 Console.WriteLine("\nВведите количество кусков на которое вы хотите дополнительно порезать пиццу:");
@@ -108,9 +78,9 @@ namespace PRAC2
 
         public static void Bake(string pizza)
         {
-            Console.WriteLine("Пицца готовится...");
+            Console.WriteLine("Заказ готовится...");
             Thread.Sleep(3000); // пауза
-            Console.WriteLine($"Пицца {pizza}  готова!");
+            Console.WriteLine($"Позиция {pizza}  готова!");
         }
 
         /*НАПОМИНАНИЕ ПРО АНАНАСЫ*/
