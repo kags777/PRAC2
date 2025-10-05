@@ -53,7 +53,8 @@ namespace PRAC2
             {
                 do
                 {
-                    Console.WriteLine("\n1 - Добавить пиццу в заказ\n2 - Добавить кальцоне\n3 - Посмотреть заказ\n4 - Отправить заказ на кухню приготавливаться\n5 - Удалить позицию из заказа\n6 - Покушать\n7 - Выйти");
+                    Console.WriteLine("\n1 - Добавить пиццу в заказ\n2 - Добавить кальцоне\n3 - Посмотреть заказ\n" +
+                        "4 - Отправить заказ на кухню приготавливаться\n5 - Удалить позицию из заказа\n6 - Покушать\n7 - Выйти");
                     string num = Console.ReadLine();
                     if (Param.TryParseNumber(num, out Num1) == true && (Num1 <= 7)) checkInt = 1;
                 } while (checkInt != 1);
@@ -93,46 +94,8 @@ namespace PRAC2
                             }
                         } while (InvalidChoice == 3);
 
-                        while (true)
-                        {
-                            Console.WriteLine("Введите размер пиццы (small,medium,large,extraLarge):");
-                            string input = Console.ReadLine();
-
-                            if (Enum.TryParse(input, true, out size) && int.TryParse(input, out quantity) == false) // true = игнорировать регистр
-                            {
-                                Console.WriteLine($"Вы выбрали размер: {size}");
-
-                                if (size == Param.PizzaSize.medium)
-                                {
-                                    pizza[Num - 1].Slices += 2;
-                                    pizza[Num - 1].Calories += 100;
-                                    pizza[Num - 1].Mass += 100;
-
-                                }
-
-                                if (size == Param.PizzaSize.large)
-                                {
-                                    pizza[Num - 1].Slices += 4;
-                                    pizza[Num - 1].Calories += 200;
-                                    pizza[Num - 1].Mass += 200;
-
-                                }
-
-                                if (size == Param.PizzaSize.extraLarge)
-                                {
-                                    pizza[Num - 1].Slices += 6;
-                                    pizza[Num - 1].Calories += 300;
-                                    pizza[Num - 1].Mass += 300;
-                                }
-
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ошибка: такого размера нет! Попробуйте снова.");
-                            }
-                        }
-
+                        ChoosePizzaSize(pizza, Num - 1);//метод который позволяет выбрать размер пиццы
+                      
                         do
                         {
                             Console.WriteLine("\nЖелаете ли вы дополнительно порезать пиццу на куски? \n1 - Да\n2 - Нет");
@@ -167,84 +130,16 @@ namespace PRAC2
                         Console.WriteLine("\nПицца добавлена в заказ!");
                         break;
 
-
-
                     case 2:
 
-                        do
-                        {
-                            Console.WriteLine("Введите номер кальцоне, которую хотите добавить в заказ:\n" +
-                                "РАЗВЕСОВКА,КАЛОРИИ ПРИВЕДЕНЫ ДЛЯ МАЛЕНЬКОГО РАЗМЕРА КАЛЬЦОНЕ");
-
-                            int index = 1;
-                            foreach (var calz in Calzone.calzone)
-                            {
-                                Console.WriteLine($"{index,2}) {calz.Name,-25} {calz.Mass,6} г  {calz.Calories,5} ккал");
-                                index++;
-                            }
-
-                            string numCalz = Console.ReadLine();
-                            if (Param.TryParseNumber(numCalz, out NumCalz) == true)
-                                invalidCalzone = 1;
-
-                        } while (invalidCalzone != 1);
-
-                        do
-                        {
-                            if (NumCalz < 1 || NumCalz > Calzone.calzone.Count)
-                            {
-                                Console.WriteLine("Ошибка: выберите кальцоне из списка!");
-                                invalidCalzone = 3;
-                            }
-                            else
-                            {
-                                invalidCalzone = 0;
-                            }
-                        } while (invalidCalzone == 3);
-
-                        while (true)
-                        {
-                            Console.WriteLine("Введите размер кальцоне (small,medium,large,extraLarge):");
-                            string input = Console.ReadLine();
-
-                            if (Enum.TryParse(input, true, out size) && int.TryParse(input, out quantity) == false) // true = игнорировать регистр
-                            {
-                                Console.WriteLine($"Вы выбрали размер: {size}");
-
-                                if (size == Param.PizzaSize.medium)
-                                {
-                                    Calzone.calzone[NumCalz - 1].Calories += 100;
-                                    Calzone.calzone[NumCalz - 1].Mass += 100;
-                                }
-
-                                if (size == Param.PizzaSize.large)
-                                {
-                                    Calzone.calzone[NumCalz - 1].Calories += 200;
-                                    Calzone.calzone[NumCalz - 1].Mass += 200;
-                                }
-
-                                if (size == Param.PizzaSize.extraLarge)
-                                {
-                                    Calzone.calzone[NumCalz - 1].Calories += 300;
-                                    Calzone.calzone[NumCalz - 1].Mass += 300;
-                                }
-
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ошибка: такого размера нет! Попробуйте снова.");
-                            }
-                        }
-                        orders.Add(Calzone.calzone[NumCalz - 1]);
-
-                        Console.WriteLine("\nКальцоне добавлена в заказ!");
+                        NumCalz = Calzone.ChooseCalzone();//выбираю кальцоне
+                        Calzone.ChooseCalzoneSize(orders, NumCalz); //выбираю размер кальцоне
                         break;
 
                     case 3:
 
                         if (orders.Count == 0 && orders.Count == 0)
-                            Console.WriteLine("Вы еще не сделали заказ");
+                            Console.WriteLine("Вы не сделали заказ");
                         index1 = 1;
                         foreach (var food in orders)
                         {
@@ -340,7 +235,7 @@ namespace PRAC2
                         Pizza.Eat(NumEat);
                         cooked.RemoveAt(NumEat - 1);
                         break;
-       
+
                     case 7:
 
                         Console.WriteLine("До свидания!");
