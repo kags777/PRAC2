@@ -16,7 +16,7 @@ namespace PRAC2
         public int quantity;//количество кусков, которое будет съедено
         public int PizzaCount;//количество пицц, которые надо испечь
         public static int Reminder;//нужны ли ананасы
-
+        public  const int MAXCUTSLICES = 10;
         public int Slices { get; set; }
         public int WeightToSize { get; set; }
 
@@ -52,7 +52,7 @@ namespace PRAC2
                 Console.WriteLine("\nВведите количество кусков на которое вы хотите дополнительно порезать пиццу:");
                 string MoreSlicesStr = Console.ReadLine();
 
-                if (int.TryParse(MoreSlicesStr, out MoreSlices) && (MoreSlices <= 10))
+                if (int.TryParse(MoreSlicesStr, out MoreSlices) && (MoreSlices <= MAXCUTSLICES))
                 {
                     a = 1;
                 }

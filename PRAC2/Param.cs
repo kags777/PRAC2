@@ -13,6 +13,33 @@ namespace PRAC2
     internal class Param
     {
 
+        public class MyNumber
+        {
+            public int Value;
+
+            public MyNumber(int value)
+            {
+                Value = value;
+            }
+
+            // "Перегрузка присваивания" через конструктор копирования
+            public MyNumber(MyNumber other)
+            {
+                Value = other.Value;
+            }
+
+            // Перегрузка арифметической операции +
+            public static MyNumber operator +(MyNumber a, MyNumber b)
+            {
+                return new MyNumber(a.Value + b.Value);
+            }
+
+            public override string ToString()
+            {
+                return Value.ToString();
+            }
+        }
+
         public enum PizzaSize
         {
             small,
